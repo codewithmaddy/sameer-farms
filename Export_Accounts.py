@@ -9,10 +9,11 @@ my_cursor = my_db.cursor()
 
 
 def clear():
-
+    date = f"{datetime.datetime.now().day}/{datetime.datetime.now().month}/{datetime.datetime.now().year}"
     customer_name_value.set("")
     exporter_name_value.set("")
     received_by_value.set("")
+    date_value.set(date)
     owner1_value.set("")
     quantity1_value.set("0")
     weight1_value.set("0")
@@ -71,6 +72,22 @@ def save():
                       f" {float(total_value.get())}, {float(fare_value.get())}, {float(received_value.get())}, "
                       f"{float(due_value.get())});")
     my_db.commit()
+    b_num = int(bill_value.get()) + 1
+    bill_value.set(b_num)
+    root.update()
+
+
+def calculate():
+    amount1_value.set(f"{float(weight1_value.get()) * float(rate1_value.get())}")
+    amount2_value.set(f"{float(weight2_value.get()) * float(rate2_value.get())}")
+    amount3_value.set(f"{float(weight3_value.get()) * float(rate3_value.get())}")
+    amount4_value.set(f"{float(weight4_value.get()) * float(rate4_value.get())}")
+    amount5_value.set(f"{float(weight5_value.get()) * float(rate5_value.get())}")
+    root.update()
+    total = float(amount1_value.get()) + float(amount2_value.get()) + float(amount3_value.get())
+    total = total + float(amount4_value.get()) + float(amount5_value.get())
+    total_value.set(total)
+    root.update()
 
 
 root = Tk()
@@ -317,9 +334,9 @@ edit_button = Button(input_frame, text="     Edit     ", font=font_entry, bg="la
 edit_button.grid(row=7, column=2)
 
 # Creating Calculate button
-clear_button = Button(input_frame, text="  Calculate  ", font=font_entry, bg="lavender",
-                      relief='solid', borderwidth=1, padx=20)
-clear_button.grid(row=8, column=1)
+calc_button = Button(input_frame, text="  Calculate  ", font=font_entry, bg="lavender",
+                     relief='solid', borderwidth=1, padx=20, command=calculate)
+calc_button.grid(row=8, column=1)
 
 # Creating Button save
 save_button = Button(input_frame, text="    Save    ", font=font_entry, bg="lavender",
