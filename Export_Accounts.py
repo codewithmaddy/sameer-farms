@@ -39,6 +39,7 @@ def clear():
     rate5_value.set("0")
     amount5_value.set("0")
     total_value.set("0")
+    fare_value.set("0")
     received_value.set("0")
     due_value.set("0")
 
@@ -60,12 +61,15 @@ def save():
                       f" '{owner1_value.get()}', {int(quantity1_value.get())}, {float(weight1_value.get())}, "
                       f" {float(rate1_value.get())}, {float(amount1_value.get())},"
                       f" '{owner2_value.get()}', {int(quantity2_value.get())}, {float(weight2_value.get())}, "
-                      f"'{float(rate2_value.get())}', '{float(amount2_value.get())}', "
-                      f"'c', '10', '10', '10', '10',"
-                      f" 'd', '10', '10', '10', '10',"
-                      f" 'e', '10', '10', '10', "
-                      f"'10',"
-                      f" '50', '5', '50', '5');")
+                      f"{float(rate2_value.get())}, {float(amount2_value.get())}, "
+                      f"'{owner3_value.get()}', {int(quantity3_value.get())}, {float(weight3_value.get())}, "
+                      f"{float(rate3_value.get())}, {float(amount3_value.get())},"
+                      f" '{owner4_value.get()}', {int(quantity4_value.get())}, {float(weight4_value.get())}, "
+                      f"{float(rate4_value.get())}, {float(amount4_entry.get())},"
+                      f" '{owner5_value.get()}', {int(quantity5_value.get())}, {float(weight5_value.get())}, "
+                      f"{float(rate5_value.get())}, {float(amount5_value.get())},"
+                      f" {float(total_value.get())}, {float(fare_value.get())}, {float(received_value.get())}, "
+                      f"{float(due_value.get())});")
     my_db.commit()
 
 
@@ -264,58 +268,66 @@ rate5_entry.grid(row=6, column=4, pady=10)
 amount5_entry.grid(row=6, column=5, pady=10)
 
 # Making Output Labels
-total_label = Label(input_frame, text="Total :- ", font="Ariel 18 ", bg="lavender",
+total_label = Label(input_frame, text="Total :- ", font=font_entry, bg="lavender",
                     relief='solid', borderwidth=2, padx=80)
-received_label = Label(input_frame, text="Received :- ", font="Ariel 18 ", bg="lavender",
+fare_label = Label(input_frame, text="Fare :- ", font=font_entry, bg="lavender",
+                   relief='solid', borderwidth=2, padx=80)
+received_label = Label(input_frame, text="Received :- ", font=font_entry, bg="lavender",
                        relief='solid', borderwidth=2, padx=57)
-due_label = Label(input_frame, text="Due :- ", font="Ariel 18 ", bg="lavender",
+due_label = Label(input_frame, text="Due :- ", font=font_entry, bg="lavender",
                   relief='solid', borderwidth=2, padx=84)
+
 
 # Packing labels
 total_label.grid(row=7, column=4, pady=10)
-received_label.grid(row=8, column=4, pady=10)
-due_label.grid(row=9, column=4, pady=10)
+fare_label.grid(row=8, column=4, pady=10)
+received_label.grid(row=9, column=4, pady=10)
+due_label.grid(row=10, column=4, pady=10)
 
 # Defining Variables for Output
 total_value = StringVar()
+fare_value = StringVar()
 received_value = StringVar()
 due_value = StringVar()
 
 # Making Entry widget
-total_entry = Entry(input_frame, textvariable=total_value, font="Ariel 16 ", bg="white",
+total_entry = Entry(input_frame, textvariable=total_value, font=font_entry, bg="white",
                     relief='solid', borderwidth=1)
-received_entry = Entry(input_frame, textvariable=received_value, font="Ariel 16 ", bg="white",
+fare_entry = Entry(input_frame, textvariable=fare_value, font=font_entry, bg="white",
+                   relief='solid', borderwidth=1)
+received_entry = Entry(input_frame, textvariable=received_value, font=font_entry, bg="white",
                        relief='solid', borderwidth=1)
-due_entry = Entry(input_frame, textvariable=due_value, font="Ariel 16 ", bg="white",
+due_entry = Entry(input_frame, textvariable=due_value, font=font_entry, bg="white",
                   relief='solid', borderwidth=1)
 
 # Packing Entry Widget
 total_entry.grid(row=7, column=5)
-received_entry.grid(row=8, column=5)
-due_entry.grid(row=9, column=5)
+fare_entry.grid(row=8, column=5)
+received_entry.grid(row=9, column=5)
+due_entry.grid(row=10, column=5)
 
 # Creating Search button
-search_button = Button(input_frame, text="    Search    ", font="Ariel 16 ", bg="lavender",
+search_button = Button(input_frame, text="    Search    ", font=font_entry, bg="lavender",
                        relief='solid', borderwidth=1, padx=20)
 search_button.grid(row=7, column=1)
 
 # Creating Edit button
-edit_button = Button(input_frame, text="     Edit     ", font="Ariel 16 ", bg="lavender",
+edit_button = Button(input_frame, text="     Edit     ", font=font_entry, bg="lavender",
                      relief='solid', borderwidth=1, padx=20)
 edit_button.grid(row=7, column=2)
 
 # Creating Calculate button
-clear_button = Button(input_frame, text="  Calculate  ", font="Ariel 16 ", bg="lavender",
+clear_button = Button(input_frame, text="  Calculate  ", font=font_entry, bg="lavender",
                       relief='solid', borderwidth=1, padx=20)
 clear_button.grid(row=8, column=1)
 
 # Creating Button save
-save_button = Button(input_frame, text="    Save    ", font="Ariel 16 ", bg="lavender",
+save_button = Button(input_frame, text="    Save    ", font=font_entry, bg="lavender",
                      relief='solid', borderwidth=1, padx=20, command=save)
 save_button.grid(row=8, column=2)
 
 # Creating Button clear
-clear_button = Button(input_frame, text="    Clear    ", font="Ariel 16 ", bg="lavender",
+clear_button = Button(input_frame, text="    Clear    ", font=font_entry, bg="lavender",
                       relief='solid', borderwidth=1, padx=20, command=clear)
 clear_button.grid(row=8, column=3)
 
