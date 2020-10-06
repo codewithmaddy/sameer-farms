@@ -3,7 +3,7 @@ import mysql.connector
 import datetime
 
 my_db = mysql.connector.connect(host="localhost", user="root", password="root123",
-                                auth_plugin="mysql_native_password", database="test")
+                                auth_plugin="mysql_native_password", database="SAMEER_FARMS")
 
 my_cursor = my_db.cursor()
 
@@ -91,7 +91,44 @@ def calculate():
 
 
 def search():
-    pass
+    my_cursor.execute(f"SELECT * FROM EXPORT WHERE bill_no = {int(bill_value.get())}")
+    for i in my_cursor:
+        bn, cn, en, rb, dt, o1, q1, w1, r1, a1, o2, q2, w2, r2, a2, o3, q3, w3, r3, a3, o4, q4, w4, r4, a4, o5, q5, w5, r5, a5, t, f, r, d = i
+    customer_name_value.set(f"{cn}")
+    exporter_name_value.set(f"{en}")
+    received_by_value.set(f"{rb}")
+    date_value.set("19/04/2002")
+    owner1_value.set(f"{o1}")
+    quantity1_value.set(f"{q1}")
+    weight1_value.set(f"{w1}")
+    rate1_value.set(f"{r1}")
+    amount1_value.set(f"{a1}")
+    owner2_value.set(f"{o2}")
+    quantity2_value.set(f"{q2}")
+    weight2_value.set(f"{w2}")
+    rate2_value.set(f"{r2}")
+    amount2_value.set(f"{a2}")
+    owner3_value.set(f"{o3}")
+    quantity3_value.set(f"{q3}")
+    weight3_value.set(f"{w3}")
+    rate3_value.set(f"{r3}")
+    amount3_value.set(f"{a3}")
+    owner4_value.set(f"{o4}")
+    quantity4_value.set(f"{q4}")
+    weight4_value.set(f"{w4}")
+    rate4_value.set(f"{r4}")
+    amount4_value.set(f"{a4}")
+    owner5_value.set(f"{o5}")
+    quantity5_value.set(f"{q5}")
+    weight5_value.set(f"{w5}")
+    rate5_value.set(f"{r5}")
+    amount5_value.set(f"{a5}")
+    total_value.set(f"{t}")
+    fare_value.set(f"{f}")
+    received_value.set(f"{r}")
+    due_value.set(f"{d}")
+
+    root.update()
 
 
 def edit():
