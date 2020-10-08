@@ -1,4 +1,24 @@
 from tkinter import *
+import mysql.connector
+import datetime
+
+
+my_db = mysql.connector.connect(host="localhost", user="root", password="root123",
+                                auth_plugin="mysql_native_password", database="SAMEER_FARMS")
+
+my_cursor = my_db.cursor()
+
+
+def save():
+    d, m, y = map(int, (date_value.get()).split('/'))
+    date = datetime.date(y, m, d)
+    my_cursor.execute("INSERT INTO `sameer_farms`.`import` (`owner_id`, `owner_name`, `mean_weight`, `date`, "
+                      "`quantity`, `rate`, `weight`, `amount`, `left`) VALUES "
+                      f"('{owner_id_value.get()}', '{owner_name_value.get()}', {float(m_weight_value.get())}, "
+                      f"'{date}', {float(quantity_value.get())}, {float(rate_value.get())}, "
+                      f"{float(weight_value.get())}, {float(amount_value.get())}, {float(weight_value.get())});")
+    my_db.commit()
+
 
 root = Tk()
 
@@ -28,50 +48,50 @@ input_frame = Frame(root, bg='lavender')
 input_frame.pack(fill=X)
 
 # Making input labels
-date_input_label = Label(input_frame, text="Date :-", font="ariel 12", bg="lavender")
-m_weight_input_label = Label(input_frame, text="Mean Weight :-", font="ariel 12", bg="lavender")
 owner_id_input_label = Label(input_frame, text="Owner ID :-", font="ariel 12", bg="lavender")
 owner_name_input_label = Label(input_frame, text="Owner Name :-", font="ariel 12", bg="lavender")
+m_weight_input_label = Label(input_frame, text="Mean Weight :-", font="ariel 12", bg="lavender")
+date_input_label = Label(input_frame, text="Date :-", font="ariel 12", bg="lavender")
 quantity_input_label = Label(input_frame, text="Quantity :-", font="ariel 12", bg="lavender")
 rate_input_label = Label(input_frame, text="Rate :-", font="ariel 12", bg="lavender")
 weight_input_label = Label(input_frame, text="Weight :-", font="ariel 12", bg="lavender")
 amount_input_label = Label(input_frame, text="Amount :-", font="ariel 12", bg="lavender")
 
 # Packing input labels
-date_input_label.grid(row=1, column=1, padx=10, pady=10)
-m_weight_input_label.grid(row=1, column=3, padx=10, pady=10)
-owner_id_input_label.grid(row=1, column=5, padx=10, pady=10)
-owner_name_input_label.grid(row=1, column=7, padx=10, pady=10)
+owner_id_input_label.grid(row=1, column=1, padx=10, pady=10)
+owner_name_input_label.grid(row=1, column=3, padx=10, pady=10)
+m_weight_input_label.grid(row=1, column=5, padx=10, pady=10)
+date_input_label.grid(row=1, column=7, padx=10, pady=10)
 quantity_input_label.grid(row=2, column=1, padx=10, pady=10)
 rate_input_label.grid(row=2, column=3, padx=10, pady=10)
 weight_input_label.grid(row=2, column=5, padx=10, pady=10)
 amount_input_label.grid(row=2, column=7, padx=10, pady=10)
 
 # Defining input variables
-date_value = StringVar()
-m_weight_value = StringVar()
 owner_id_value = StringVar()
 owner_name_value = StringVar()
+m_weight_value = StringVar()
+date_value = StringVar()
 quantity_value = StringVar()
 rate_value = StringVar()
 weight_value = StringVar()
 amount_value = StringVar()
 
 # Making Entry Label
-date_enter = Entry(input_frame, textvariable=date_value, font="ariel 12", bg="floral white")
-m_weight_enter = Entry(input_frame, textvariable=m_weight_value, font="ariel 12", bg="floral white")
 owner_id_enter = Entry(input_frame, textvariable=owner_id_value, font="ariel 12", bg="floral white")
 owner_name_enter = Entry(input_frame, textvariable=owner_name_value, font="ariel 12", bg="floral white")
+m_weight_enter = Entry(input_frame, textvariable=m_weight_value, font="ariel 12", bg="floral white")
+date_enter = Entry(input_frame, textvariable=date_value, font="ariel 12", bg="floral white")
 quantity_enter = Entry(input_frame, textvariable=quantity_value, font="ariel 12", bg="floral white")
 rate_enter = Entry(input_frame, textvariable=rate_value, font="ariel 12", bg="floral white")
 weight_enter = Entry(input_frame, textvariable=weight_value, font="ariel 12", bg="floral white")
 amount_enter = Entry(input_frame, textvariable=amount_value, font="ariel 12", bg="floral white")
 
 # Packing Entry Widget
-date_enter.grid(row=1, column=2, padx=10, pady=10)
-m_weight_enter.grid(row=1, column=4, padx=10, pady=10)
-owner_id_enter.grid(row=1, column=6, padx=10, pady=10)
-owner_name_enter.grid(row=1, column=8, padx=10, pady=10)
+owner_id_enter.grid(row=1, column=2, padx=10, pady=10)
+owner_name_enter.grid(row=1, column=4, padx=10, pady=10)
+m_weight_enter.grid(row=1, column=6, padx=10, pady=10)
+date_enter.grid(row=1, column=8, padx=10, pady=10)
 quantity_enter.grid(row=2, column=2, padx=10, pady=10)
 rate_enter.grid(row=2, column=4, padx=10, pady=10)
 weight_enter.grid(row=2, column=6, padx=10, pady=10)
@@ -82,14 +102,8 @@ output_frame = Frame(root, bg='lavender')
 output_frame.pack(fill=X)
 
 # Save Button
-save_button = Button(output_frame, text="Save Data", font="Ariel 15", bg="floral white")
+save_button = Button(output_frame, text="Save Data", font="Ariel 15", bg="floral white", command=save)
 save_button.pack(pady=20)
 
-# List box
-scrollbar = Scrollbar(output_frame)
-scrollbar.pack(side=RIGHT, fill=Y)
-output_listbox = Listbox(output_frame, yscrollcommand=scrollbar, height=12, font=("Ariel", 15), bg="floral white")
-output_listbox.pack(fill=X, padx=10, pady=10)
-scrollbar.config(command=output_listbox.yview)
 
 mainloop()
