@@ -9,6 +9,24 @@ my_db = mysql.connector.connect(host="localhost", user="root", password="root123
 my_cursor = my_db.cursor()
 
 
+def calc():
+    amount = float(rate_value.get())*float(weight_value.get())
+    amount_value.set(f"{amount}")
+
+
+def clear():
+    date = f"{datetime.datetime.now().day}/{datetime.datetime.now().month}/{datetime.datetime.now().year}"
+    owner_id_value.set("")
+    owner_name_value.set("")
+    m_weight_value.set("")
+    date_value.set(f"{date}")
+    quantity_value.set("")
+    weight_value.set("")
+    rate_value.set("")
+    amount_value.set("")
+    root.update()
+
+
 def save():
     d, m, y = map(int, (date_value.get()).split('/'))
     date = datetime.date(y, m, d)
@@ -96,14 +114,21 @@ quantity_enter.grid(row=2, column=2, padx=10, pady=10)
 rate_enter.grid(row=2, column=4, padx=10, pady=10)
 weight_enter.grid(row=2, column=6, padx=10, pady=10)
 amount_enter.grid(row=2, column=8, padx=10, pady=10)
+clear()
 
 # Making Output frame
 output_frame = Frame(root, bg='lavender')
 output_frame.pack(fill=X)
 
+# Calculate Button
+calc_button = Button(output_frame, text="Calculate", font="Ariel 15", bg="floral white", command=calc)
+calc_button.pack(pady=10)
+
 # Save Button
 save_button = Button(output_frame, text="Save Data", font="Ariel 15", bg="floral white", command=save)
-save_button.pack(pady=20)
+save_button.pack(pady=10)
 
-
+# Clear Button
+clear_button = Button(output_frame, text="Clear Data", font="Ariel 15", bg="floral white", command=clear)
+clear_button.pack(pady=10)
 mainloop()
