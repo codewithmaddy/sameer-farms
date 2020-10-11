@@ -1,0 +1,149 @@
+from tkinter import *
+import mysql.connector
+import datetime
+
+
+my_db = mysql.connector.connect(host="localhost", user="root", password="root123",
+                                auth_plugin="mysql_native_password", database="SAMEER_FARMS")
+
+my_cursor = my_db.cursor()
+
+
+def draw_table():
+    # Making labels of main row
+    bill_no_label = Label(table_frame, text="Bill No.", font="Ariel 16 ", bg="lavender", relief="solid",
+                          borderwidth=1, padx=40)
+    date_label = Label(table_frame, text="Date", font="Ariel 16 ", bg="lavender", relief="solid",
+                       borderwidth=1, padx=40)
+    cust_name_label = Label(table_frame, text="Customer Name", font="Ariel 16 ", bg="lavender", relief="solid",
+                            borderwidth=1, padx=40)
+    received_label = Label(table_frame, text="Received by", font="Ariel 16 ", bg="lavender", relief="solid",
+                           borderwidth=1, padx=40)
+    quantity_no_label = Label(table_frame, text="Quantity", font="Ariel 16 ", bg="lavender", relief="solid",
+                              borderwidth=1, padx=40)
+    weight_label = Label(table_frame, text="Weight", font="Ariel 16 ", bg="lavender", relief="solid",
+                         borderwidth=1, padx=40)
+    rate_label = Label(table_frame, text="Rate", font="Ariel 16 ", bg="lavender", relief="solid",
+                       borderwidth=1, padx=40)
+    amount_label = Label(table_frame, text="Amount", font="Ariel 16 ", bg="lavender", relief="solid",
+                         borderwidth=1, padx=35)
+
+    # Packing Labels
+    bill_no_label.grid(row=1, column=1)
+    date_label.grid(row=1, column=2)
+    cust_name_label.grid(row=1, column=3)
+    received_label.grid(row=1, column=4)
+    quantity_no_label.grid(row=1, column=5)
+    weight_label.grid(row=1, column=6)
+    rate_label.grid(row=1, column=7)
+    amount_label.grid(row=1, column=8)
+
+
+def fill_data():
+    font = "Ariel 15"
+    i = 2
+    for j in range(1, 5):
+        my_cursor.execute(f"SELECT bill_no, date, cust_name, paid_to, quantity_{j}, weight_{j}, rate_{j}, received "
+                          f"FROM export "
+                          f"WHERE owner_id_{j}='{owner_id_value.get()}' ;")
+        for x in my_cursor:
+            i = i+1
+            # Defining Variables
+            bill_no = StringVar()
+            date = StringVar()
+            cust_name = StringVar()
+            received_by = StringVar()
+            quantity = StringVar()
+            weight = StringVar()
+            rate = StringVar()
+            amount = StringVar()
+
+            # Making Entry widget
+            bill_no_entry = Entry(table_frame, textvariable=bill_no, font=font, bg="white",
+                                  relief='solid', borderwidth=1, width=5)
+            date_entry = Entry(table_frame, textvariable=date, font=font, bg="white",
+                               relief='solid', borderwidth=1, width=10)
+            cust_name_entry = Entry(table_frame, textvariable=cust_name, font=font, bg="white",
+                                    relief='solid', borderwidth=1, width=17)
+            received_by_entry = Entry(table_frame, textvariable=received_by, font=font, bg="white",
+                                      relief='solid', borderwidth=1, width=17)
+            quantity_entry = Entry(table_frame, textvariable=quantity, font=font, bg="white",
+                                   relief='solid', borderwidth=1, width=10)
+            weight_entry = Entry(table_frame, textvariable=weight, font=font, bg="white",
+                                 relief='solid', borderwidth=1, width=10)
+            rate_entry = Entry(table_frame, textvariable=rate, font=font, bg="white",
+                               relief='solid', borderwidth=1, width=10)
+            amount_entry = Entry(table_frame, textvariable=amount, font=font, bg="white",
+                                 relief='solid', borderwidth=1, width=10)
+
+            # Packing Entries
+            bill_no_entry.grid(row=i, column=1)
+            date_entry.grid(row=i, column=2)
+            cust_name_entry.grid(row=i, column=3)
+            received_by_entry.grid(row=i, column=4)
+            quantity_entry.grid(row=i, column=5)
+            weight_entry.grid(row=i, column=6)
+            rate_entry.grid(row=i, column=7)
+            amount_entry.grid(row=i, column=8)
+
+            # Filling values
+            bill_no.set(f"{x[0]}")
+            date.set(f"{x[1]}")
+            cust_name.set(f"{x[2]}")
+            received_by.set(f"{x[3]}")
+            quantity.set(f"{x[4]}")
+            weight.set(f"{x[5]}")
+            rate.set(f"{x[6]}")
+            amount.set(f"{x[7]}")
+
+
+def clear():
+    for widget in table_frame.winfo_children():
+        widget.destroy()
+
+
+def search():
+    clear()
+    draw_table()
+    fill_data()
+
+
+if __name__ == '__main__':
+    root = Tk()
+
+    root.geometry("1200x600")
+    root.title("Owner ID Search ")
+
+    # Making Heading Frame
+    head_frame = Frame(root, bg='lavender', relief='solid', borderwidth=3)
+    head_frame.pack(fill=X)
+
+    main_head = Label(head_frame, text="Sameer Poultry Farms", font="algerian 40 bold", bg="lavender")
+    main_head.pack(fill=X)
+
+    add_head = Label(head_frame, text="Owner ID (Gadi) Search ",
+                     font="Ariel 15 bold", bg="lavender")
+    add_head.pack(fill=X)
+
+    # Creating Frame for exporter search
+    search_frame = Frame(root, bg='lavender', relief='solid', borderwidth=3)
+    search_frame.pack(fill=X, pady=5)
+
+    # Creating labels
+    owner_id_label = Label(search_frame, text="Owner ID :- ", font="Ariel 15 ", bg="lavender")
+    owner_id_label.grid(row=1, column=1, padx=10, pady=10)
+
+    # Creating Entry Widget
+    owner_id_value = StringVar()
+    owner_id_entry = Entry(search_frame, textvariable=owner_id_value, font="Ariel 15")
+    owner_id_entry.grid(row=1, column=2, padx=10, pady=10)
+
+    # Creating Button
+    search_button = Button(search_frame, text="SEARCH", font="Ariel 15", command=search)
+    search_button.grid(row=1, column=3, padx=10, pady=10)
+
+    # Creating Table Frame
+    table_frame = Frame(root)
+    table_frame.pack(fill=X, pady=5)
+
+    mainloop()
